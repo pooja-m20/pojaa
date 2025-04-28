@@ -38,9 +38,12 @@ def init_db():
 
 # Sample products
 PRODUCTS = [
-    {'id': 1, 'name': 'Laptop', 'price': 999},
-    {'id': 2, 'name': 'Headphones', 'price': 199},
-    {'id': 3, 'name': 'Smartphone', 'price': 799},
+    {'id': 1, 'title': 'Blushing Be{auty', 'category':'aniversary', 'price': 899, 'image_url':'/static/images/img13.jpg' },
+    {'id': 12, 'title': 'Dazzling Delight Be{auty', 'category': 'Wedding', 'price': 699.99,'image_url': '/static/images/try4.jpg'},
+    {'id': 2, 'title': 'Sunset Bliss Be{auty', 'category': 'aniversary', 'price': 1000,'image_url': '/static/images/img2.jpg'},
+    {'id': 3, 'title': 'Jasmine Dreams Be{auty', 'category': 'Birthday', 'price': 699.99,'image_url': '/static/images/img2.jpg'},
+    {'id': 4, 'title': ' White Eleganc Be{auty', 'category': 'Wedding', 'price': 899,'image_url': '/static/images/img12.jpg'},
+    {'id': 5, 'title': 'Blushing Be{auty', 'category': 'aniversary', 'price': 899,'image_url': '/static/images/img13.jpg'},
 ]
 
 # Initialize DB
@@ -50,7 +53,9 @@ def init_db():
             CREATE TABLE IF NOT EXISTS orders (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 product_id INTEGER,
-                product_name TEXT,
+                product_title TEXT,
+                product_category TEXT,
+                image_url REAL,
                 price REAL
             )
         ''')
@@ -157,19 +162,6 @@ def checkout():
     session['cart'] = []
     flash("Order placed successfully!")
     return redirect(url_for('index'))
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
