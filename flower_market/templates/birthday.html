@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blooming Delights | Our Products</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f7f4;
+        }
+
+         /* Header Styles */
+        header {
+            background-color: pink;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .announcement-bar {
+            background-color: #2c5545;
+            color: white;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c5545;
+        }
+        .header img{
+            height:60px;
+            margin-right:0px;
+
+        }
+
+
+        .logo span {
+            color: #e8876d;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: #e8876d;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icons .icon {
+            font-size: 22px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .header-icons .icon:hover {
+            color: #e8876d;
+        }
+
+        .cart-count {
+            background-color: #e8876d;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            top: -10px;
+            right: 8px;
+        }
+
+
+
+
+        .hero {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://via.placeholder.com/1200x300');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #e75480;
+            color: #fff;
+            border-color: #e75480;
+        }
+
+        .sort-filter select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e75480;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-weight: 400;
+            font-size: 0.9rem;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-action {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .add-to-cart {
+            padding: 0.6rem 1.2rem;
+            background-color: #e75480;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #d03e69;
+        }
+
+        .wishlist {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .wishlist:hover {
+            background-color: #f5f5f5;
+        }
+
+        .wishlist i {
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .wishlist:hover i {
+            color: #e75480;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 3rem 0;
+        }
+
+        .pagination button {
+            width: 40px;
+            height: 40px;
+            margin: 0 5px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination button.active, .pagination button:hover {
+            background-color: #e75480;
+            color: #fff;
+            border-color: #e75480;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #e75480;
+        }
+
+        .footer-section p {
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: #e75480;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #444;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: #e75480;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #444;
+            color: #bbb;
+        }
+
+             /* Featured Products */
+        .featured-products {
+            background-color: #f5f5f5;
+            padding: 80px 20px;
+        }
+
+        .featured-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #e8876d;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .product-wishlist {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .price-current {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c5545;
+            margin-right: 10px;
+        }
+
+        .price-original {
+            font-size: 14px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-to-cart {
+            background-color: #2c5545;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #1e3c30;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            color: #ffc107;
+            font-size: 14px;
+        }
+
+        .rating-count {
+            color: #666;
+            margin-left: 5px;
+        }
+
+
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="/ " ><img src="/static/images/logo.jpg" style="height:60px;"></a>
+            <a href="/home" class="logo">Everafter<span>Freshness</span></a>
+
+
+            <nav class="header-nav">
+                    <a href="/">Home</a>
+                    <a href="/about">About</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/shop">Shop</a>
+                    <a href="/login">Profile</a>
+
+            </nav>
+
+            <div class="header-icons">
+                <div class="icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="icon">
+                    <a href="/login"><i class="far fa-user"></i></a>
+
+                </div>
+                <div class="icon">
+                    <a href="/shop"><i class="far fa-heart"></i></a>
+                </div>
+                <div class="icon">
+                    <a href="/shop"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+        <div class="container">
+            <h1 align="center">Our Fresh Collection</h1>
+            <p align="center">Handpicked flowers for every occasion</p>
+        </div>
+
+
+     <main class="container">
+        <section class="filters">
+            <div class="category-filter">
+                <a href="/shop"><button class="filter-btn">All</button></a>
+                <a href="/wedding"><button class="filter-btn">Wedding</button></a>
+                <a href="/birthday"><button class="filter-btn active">Birthday</button></a>
+                <a href="/aniversary"><button class="filter-btn">Aniversary</button></a>
+            </div>
+        </section>
+
+          <!-- Featured Products -->
+    <section class="featured-products">
+        <div class="featured-container">
+            <div class="section-title">
+                <h2>Featured Products</h2>
+                <p>Our most popular arrangements and seasonal favorites, handcrafted with love.</p>
+            </div>
+
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/static/images/img2.jpg " alt="Sunset Bliss">
+                        <span class="product-badge">Best Seller</span>
+                        <div class="product-wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Birthday</div>
+                        <h3 class="product-title">Jasmine Dreams</h3>
+                        <div class="product-price">
+                            <span class="price-current">699.99</span>
+                        </div>
+                        <div class="product-footer">
+                            <a href="cart.html" class="add-to-cart">Add to Cart</a>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/static/images/lilies.jpg " alt="Sunset Bliss">
+                        <div class="product-wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Birthday</div>
+                        <h3 class="product-title">Classic Rose Bouquet</h3>
+                        <div class="product-price">
+                            <span class="price-current">799.99</span>
+                        </div>
+                        <div class="product-footer">
+                            <a href="cart.html" class="add-to-cart">Add to Cart</a>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/static/images/img8.jpg " alt="Sunset Bliss">
+                        <div class="product-wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Birthday</div>
+                        <h3 class="product-title">Pink Paradise</h3>
+                        <div class="product-price">
+                            <span class="price-current">999.99</span>
+                            <span class="price-original">1599.99</span>
+                        </div>
+                        <div class="product-footer">
+                            <a href="cart.html" class="add-to-cart">Add to Cart</a>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/static/images/img2.jpg " alt="Sunset Bliss">
+                        <span class="product-badge">Best Seller</span>
+                        <div class="product-wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Birthday</div>
+                        <h3 class="product-title">Jasmine Dreams</h3>
+                        <div class="product-price">
+                            <span class="price-current">699.99</span>
+                        </div>
+                        <div class="product-footer">
+                            <a href="cart.html" class="add-to-cart">Add to Cart</a>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/static/images/try9.jpg " alt="Sunset Bliss">
+                        <span class="product-badge">Best Seller</span>
+                        <div class="product-wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Birthday</div>
+                        <h3 class="product-title">Morning Dew</h3>
+                        <div class="product-price">
+                            <span class="price-current">699.99</span>
+                        </div>
+                        <div class="product-footer">
+                            <a href="cart.html" class="add-to-cart">Add to Cart</a>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/static/images/try8.jpg " alt="Sunset Bliss">
+                        <span class="product-badge">Best Seller</span>
+                        <div class="product-wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Birthday</div>
+                        <h3 class="product-title">Morning Glory</h3>
+                        <div class="product-price">
+                            <span class="price-current">699.99</span>
+                        </div>
+                        <div class="product-footer">
+                            <a href="cart.html" class="add-to-cart">Add to Cart</a>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="product-card">
+                    <div class="product-image">
+                        <img src="/static/images/try11.jpg " alt="Sunset Bliss">
+                        <span class="product-badge">Best Seller</span>
+                        <div class="product-wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Birthday</div>
+                        <h3 class="product-title">Peachy Petals</h3>
+                        <div class="product-price">
+                            <span class="price-current">699.99</span>
+                        </div>
+                        <div class="product-footer">
+                            <a href="cart.html" class="add-to-cart">Add to Cart</a>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/static/images/img11.jpg " alt="Sunset Bliss">
+                        <span class="product-badge">Best Seller</span>
+                        <div class="product-wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Birthday</div>
+                        <h3 class="product-title">Crimson Charm</h3>
+                        <div class="product-price">
+                            <span class="price-current">699.99</span>
+                            <span class="price-original">999.99</span>
+                        </div>
+                        <div class="product-footer">
+                            <a href="cart.html" class="add-to-cart">Add to Cart</a>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/static/images/img1.jpg " alt="Sunset Bliss">
+                        <div class="product-wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Birthday</div>
+                        <h3 class="product-title">Eternal Embrace</h3>
+                        <div class="product-price">
+                            <span class="price-current">799.99</span>
+                        </div>
+                        <div class="product-footer">
+                            <a href="cart.html" class="add-to-cart">Add to Cart</a>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/static/images/img4.jpg " alt="Sunset Bliss">
+                        <span class="product-badge">Best Seller</span>
+                        <div class="product-wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Birthday</div>
+                        <h3 class="product-title">Tulip Touch</h3>
+                        <div class="product-price">
+                            <span class="price-current">499.99</span>
+                        </div>
+                        <div class="product-footer">
+                            <a href="cart.html" class="add-to-cart">Add to Cart</a>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+           </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <p>Fresh Delights is dedicated to providing the freshest flowers for all occasions. We source directly from local growers to ensure quality and longevity.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/1ATxh4JzzQ/"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/everafterfreshness2025?igsh=MWJndzUzNXI5M2IwZw=="><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/shop">Shop</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="/delivery_information">Delivery Information</a></li>
+                        <li><a href="/delivery_information">Terms & Conditions</a></li>
+                        <li><a href="/delivery_information">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i>Chitradurga </p>
+                    <p><i class="fas fa-phone"><a href="tel:+91-8019044256">8019044256</a></i></p>
+                    <p><i class="fas fa-envelope"><a href="mailto:hello@bloomnblossom.com">hello@bloomnblossom.com</a></i></p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Blooming Delights. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple JavaScript for filter buttons
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                // In a real application, you would filter the products here
+                // based on the selected category
+            });
+        });
+    </script>
+</body>
+</html>

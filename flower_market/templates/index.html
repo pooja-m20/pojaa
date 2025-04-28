@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <title>Store</title>
+</head>
+<body>
+    <h1>Product List</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for msg in messages %}
+                <li>{{ msg }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }} - ${{ product.price }}
+                <a href="/add_to_cart">Add to Cart</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/cart">Go to Cart</a>
+</body>
+</html>

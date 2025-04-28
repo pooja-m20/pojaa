@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ flower.name }}</title>
+</head>
+<body>
+    <h1>{{ flower.name }}</h1>
+    <img src="/static/images/img3.jpg" width="300px">
+    <form action="{{ url_for('add_to_cart') }}" method="post">
+        <input type="hidden" name="flower_name" value="{{ flower.name }}">
+        Quantity: <input type="number" name="quantity" min="1" value="1">
+        <button type="submit" href="/cart">Add to Cart</button>
+    </form>
+    <a href="/shop">Back to Products</a>
+</body>
+</html>

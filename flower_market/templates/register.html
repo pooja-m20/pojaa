@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Registered Users</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f9fafb;
+                padding: 40px;
+                text-align: center;
+            }
+            table {
+                margin: auto;
+                border-collapse: collapse;
+                width: 80%;
+                background-color: #fff;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                overflow: hidden;
+            }
+            th, td {
+                padding: 15px 20px;
+                border-bottom: 1px solid #f0f0f0;
+                text-align: left;
+            }
+            th {
+                background-color: #007bff;
+                color: white;
+                font-size: 16px;
+            }
+            tr:hover {
+                background-color: #f1f1f1;
+            }
+            h2 {
+                margin-bottom: 30px;
+                color: #333;
+            }
+            a {
+                display: inline-block;
+                margin-top: 20px;
+                text-decoration: none;
+                color: #007bff;
+                font-weight: bold;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Registered Users</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user[0] }}</td>
+                <td>{{ user[1] }}</td>
+                <td>{{ user[2] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="/">← Back to Signup</a>
+    </body>
+    </html>

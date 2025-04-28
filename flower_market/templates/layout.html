@@ -1,0 +1,1779 @@
+<!-- templates/layout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom & Blossom - {% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .card-img-top {
+            height: 250px;
+            object-fit: cover;
+        }
+        .rating {
+            color: gold;
+        }
+        .review-card {
+            margin-bottom: 15px;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/hero-background.jpg');
+            background-size: cover;
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <i class="fas fa-flower-daffodil"></i> Bloom & Blossom
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% end with %}
+
+    {% block content %}{% endblock %}
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Bloom & Blossom</h5>
+                    <p>Bringing beauty to your special moments</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 id="contact">Contact Us</h5>
+                    <p>Email: info@bloomandblossom.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Follow Us</h5>
+                    <div class="d-flex">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col text-center">
+                    <p class="mb-0">&copy; 2025 Bloom & Blossom. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<!-- templates/home.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Fresh Bouquets{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container text-center">
+        <h1>Welcome to Bloom & Blossom</h1>
+        <p class="lead">Handcrafted bouquets for every occasion</p>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="mb-4">Our Beautiful Bouquets</h2>
+
+    <div class="row">
+        {% for bouquet in bouquets %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="/static/images/try10.jpg" class="card-img-top" alt="{{ bouquet.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ Pink Roses }}</h5>
+                    <div class="mb-2">
+                        <div class="rating">
+                            {% for i in range(5) %}
+                                {% if i < bouquet.rating|int %}
+                                    <i class="fas fa-star"></i>
+                                {% elif (bouquet.rating - i)|round(1) >= 0.5 %}
+                                    <i class="fas fa-star-half-alt"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% end for %}
+                            <span class="ms-1">{{ bouquet.rating|round(1) }}</span>
+                        </div>
+                    </div>
+                    <p class="card-text">{{ bouquet.description|truncate(100) }}</p>
+                    <p class="card-text"><strong>{{ bouquet.price }}</strong></p>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('bouquet_details', bouquet_id=bouquet.id) }}" class="btn btn-outline-primary">View Details</a>
+                        <a href="{{ url_for('place_order', bouquet_id=bouquet.id) }}" class="btn btn-primary">Order Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% end for %}
+    </div>
+
+    <div id="about" class="my-5 py-3">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>About Bloom & Blossom</h2>
+                <p>At Bloom & Blossom, we're passionate about creating beautiful floral arrangements that bring joy to your special moments. Each bouquet is carefully crafted by our team of expert florists using only the freshest flowers sourced from local growers.</p>
+                <p>Whether you're celebrating a birthday, anniversary, or just want to brighten someone's day, our handcrafted bouquets are the perfect way to express your feelings.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="/static/images/try9.jpg" class="img-fluid rounded" alt="About Us">
+            </div>
+        </div>
+    </div>
+</div>
+{% end block %}
+
+<!-- templates/bouquet_details.html -->
+{% extends 'layout.html' %}
+
+{% block title %}{{ bouquet.name }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="/static/images/img.png" class="img-fluid rounded" alt="{{ bouquet.name }}">
+        </div>
+        <div class="col-md-6">
+            <h1>{{ bouquet.name }}</h1>
+            <div class="mb-3">
+                <div class="rating">
+                    {% for i in range(5) %}
+                        {% if i < bouquet.rating|int %}
+                            <i class="fas fa-star"></i>
+                        {% elif (bouquet.rating - i)|round(1) >= 0.5 %}
+                            <i class="fas fa-star-half-alt"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% end for %}
+                    <span class="ms-1">{{ bouquet.rating|round(1) }}</span>
+                </div>
+            </div>
+            <p class="lead">{{ bouquet.description }}</p>
+            <p class="fs-3 fw-bold text-primary">{{ bouquet.price }}</p>
+            <a href="{{ url_for('place_order', bouquet_id=bouquet.id) }}" class="btn btn-lg btn-primary">Order Now</a>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Customer Reviews</h3>
+            <hr>
+
+            {% if reviews %}
+                {% for review in reviews %}
+                <div class="card review-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="card-title">{{ review.customer_name }}</h5>
+                            <div class="rating">
+                                {% for i in range(5) %}
+                                    {% if i < review.rating %}
+                                        <i class="fas fa-star"></i>
+                                    {% else %}
+                                        <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="card-text">{{ review.comment }}</p>
+                        <small class="text-muted">{{ review.created_at }}</small>
+                    </div>
+                </div>
+                {% end for %}
+            {% else %}
+                <p>No reviews yet. Be the first to review this bouquet!</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h4 class="mb-0">Leave a Review</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('add_review', bouquet_id=bouquet.id) }}" method="post">
+                        <div class="mb-3">
+                            <label for="customer_name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="customers_name" name="customer_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rating</label>
+                            <div class="rating-select">
+                                {% for i in range(1, 6) %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="rating" id="rating{{ i }}" value="{{ i }}" {% if i == 5 %}checked{% endif %}>
+                                    <label class="form-check-label" for="rating{{ i }}">{{ i }}</label>
+                                </div>
+                                {% end for %}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Your Review</label>
+                            <textarea class="form-control" id="comment" name="comment" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- templates/place_order.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Order {{ bouquet.name }}{% end block %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="/static/images/try7.jpg" class="img-fluid rounded" alt="{{ bouquet.name }}">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h3>{{ bouquet.name }}</h3>
+                    <p>{{ bouquet.description }}</p>
+                    <div class="rating mb-2">
+                        {% for i in range(5) %}
+                            {% if i < bouquet.rating|int %}
+                                <i class="fas fa-star"></i>
+                            {% elif (bouquet.rating - i)|round(1) >= 0.5 %}
+                                <i class="fas fa-star-half-alt"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% end for %}
+                        <span class="ms-1">{{ bouquet.rating|round(1) }}</span>
+                    </div>
+                    <p class="fs-4 fw-bold text-primary">{{ bouquet.price }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Complete Your Order</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('place_order', bouquet_id=bouquet.id) }}" method="post">
+                        <div class="mb-3">
+                            <label for="customer_name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="customer_email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="customer_email" name="customer_email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="customer_phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="customer_phone" name="customer_phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Total Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text"></span>
+                                <input type="text" class="form-control" id="total_price" value="{{ bouquet.price }}" readonly>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Place Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Calculate total price based on quantity
+    document.getElementById('quantity').addEventListener('change', function() {
+        const quantity = parseInt(this.value);
+        const price = {{ bouquet.price }};
+        const totalPrice = (quantity * price).toFixed(2);
+        document.getElementById('total_price').value = totalPrice;
+    });
+</script>
+{% end block %}
+
+<!-- templates/admin.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1>Admin Dashboard</h1>
+
+    <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="bouquets-tab" data-bs-toggle="tab" data-bs-target="#bouquets" type="button" role="tab">Bouquets</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab">Orders</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="adminTabContent">
+        <div class="tab-pane fade show active" id="bouquets" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Manage Bouquets</h2>
+                <a href="{{ url_for('add_bouquet') }}" class="btn btn-success">Add New Bouquet</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Rating</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bouquet in bouquets %}
+                        <tr>
+                            <td>{{ bouquet.id }}</td>
+                            <td>
+                                <img src="{{ url_for('static', filename=bouquet.image_path) }}" alt="{{ bouquet.name }}" style="width: 80px; height: 80px; object-fit: cover;">
+                            </td>
+                            <td>{{ bouquet.name }}</td>
+                            <td>${{ bouquet.price }}</td>
+                            <td>
+                                <div class="rating">
+                                    {% for i in range(5) %}
+                                        {% if i < bouquet.rating|int %}
+                                            <i class="fas fa-star"></i>
+                                        {% elif (bouquet.rating - i)|round(1) >= 0.5 %}
+                                            <i class="fas fa-star-half-alt"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="ms-1">{{ bouquet.rating|round(1) }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('bouquet_details', bouquet_id=bouquet.id) }}" class="btn btn-sm btn-info">View</a>
+                                <a href="/shop" class="btn btn-sm btn-warning">Edit</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="orders" role="tabpanel">
+            <h2 class="mb-3">Manage Orders</h2>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Contact</th>
+                            <th>Bouquet</th>
+                            <th>Quantity</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.customer_name }}</td>
+                            <td>
+                                {{ order.customer_email }}<br>
+                                {{ order.customer_phone }}
+                            </td>
+                            <td>{{ order.bouquet_name }}</td>
+                            <td>{{ order.
+                            <td>{{ order.quantity }}</td>
+                            <td>{{ order.created_at }}</td>
+                            <td>
+                                <span class="badge bg-{% if order.status == 'Pending' %}warning{% elif order.status == 'Delivered' %}success{% elif order.status == 'Cancelled' %}danger{% else %}info{% endif %}">
+                                    {{ order.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                        Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{{ url_for('update_order_status', order_id=order.id, status='Processing') }}">Mark Processing</a></li>
+                                        <li><a class="dropdown-item" href="{{ url_for('update_order_status', order_id=order.id, status='Shipped') }}">Mark Shipped</a></li>
+                                        <li><a class="dropdown-item" href="{{ url_for('update_order_status', order_id=order.id, status='Delivered') }}">Mark Delivered</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="{{ url_for('update_order_status', order_id=order.id, status='Cancelled') }}">Cancel Order</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% end block %}
+
+<!-- templates/add_bouquet.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Add New Bouquet{% end block %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Add New Bouquet</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('add_bouquet') }}" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Bouquet Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price ($)</label>
+                            <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Upload Image</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category">
+                                <option value="seasonal">Seasonal</option>
+                                <option value="wedding">Wedding</option>
+                                <option value="anniversary">Anniversary</option>
+                                <option value="birthday">Birthday</option>
+                                <option value="sympathy">Sympathy</option>
+                                <option value="special">Special Occasion</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Featured</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured">
+                                <label class="form-check-label" for="is_featured">
+                                    Display on home page
+                                </label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('admin') }}" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Add Bouquet</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end block %}
+
+<!-- templates/order_confirmation.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Order Confirmation{% end block %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">Order Confirmation</h3>
+                </div>
+                <div class="card-body text-center">
+                    <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+                    <h2 class="mt-3">Thank You!</h2>
+                    <p class="lead">Your order has been successfully placed.</p>
+                    <p>Order #{{ order.id }}</p>
+
+                    <div class="card mb-4">
+                        <div class="card-header">Order Details</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 text-md-start">
+                                    <h5>{{ order.bouquet_name }}</h5>
+                                    <p>Quantity: {{ order.quantity }}</p>
+                                    <p>Total: ${{ order.total_price }}</p>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <p>Order Date: {{ order.created_at }}</p>
+                                    <p>Status: <span class="badge bg-warning">Pending</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>We'll contact you at {{ order.customer_email }} with updates about your order.</p>
+                    <a href="{{ url_for('home') }}" class="btn btn-primary mt-3">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- templates/login.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Admin Login{% end block %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Admin Login</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('login') }}" method="post">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <button class="toggle-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="/about"><i class="fas fa-info-circle"></i> <span>About Us</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="/contact"><i class="fas fa-envelope"></i> <span>Contact</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="/login"><i class="fas fa-shopping-cart"></i> <span>profile</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="dropdown-toggle" data-bs-toggle="collapse" href="#categoryMenu" role="button">
+                    <i class="fas fa-list"></i> <span>Occasions</span>
+                </a>
+                <div class="collapse" id="categoryMenu">
+                    <a href="/birthday" class="nav-link">Birthday</a>
+                    <a href="/aniversary" class="nav-link">Aniversary</a>
+                    <a href="/wedding" class="nav-link">Wedding</a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+ /* SideBar */
+           .sidebar {
+                height: 100vh; width:220px; padding-top: 60px;
+        }
+        .sidebar {
+            width: 150px;
+            height: 100vh;
+            background-color: #343a40;
+            color: white;
+            padding: 15px;
+            position: fixed;
+            transition: width 0.3s;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blooming Delights Flower Shop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>/* General Styles */
+:root {
+    --primary-color: #ff66b2;
+    --accent-color: #5cb85c;
+    --text-color: #333;
+    --light-bg: #f8f9fa;
+    --border-color: #e1e1e1;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: #fff;
+}
+a {
+    text-decoration: none;
+    color: block;
+}
+.btn {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+.btn:hover {
+    background-color: pink;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.logo h1 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+}
+.main-nav {
+    display: flex;
+    list-style: none;
+}
+.main-nav li {
+    margin: 0 15px;
+}
+.main-nav li a {
+    font-weight: 500;
+    transition: color 0.3s;
+}
+.main-nav li a:hover,
+.main-nav li.active a {
+    color: var(--primary-color);
+}
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+.user-actions a {
+    margin-left: 15px;
+    font-size: 1.2rem;
+    position: relative;
+}
+.wishlist-count,
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+}
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+.featured-products,
+.category-products {
+    padding: 60px 5%;
+}
+.featured-products h2,
+.category-products h2,
+.categories h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+}
+.product-card {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.product-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+.product-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.wishlist-button {
+    background-color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+.wishlist-button:hover,
+.wishlist-button.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+.product-info {
+    padding: 15px;
+}
+.product-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+.product-rating {
+    color: #ffc107;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+.product-rating span {
+    margin-left: 5px;
+    color: #666;
+}
+.product-description {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+.product-price {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+.add-to-cart-btn {
+    width: 100%;
+    padding: 10px 0;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+.add-to-cart-btn:hover {
+    background-color: #4a9d4a;
+}
+.categories {
+    padding: 60px 5%;
+    background-color: var(--light-bg);
+}
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+.category-card {
+    position: relative;
+    height: 250px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+.category-card:hover {
+    transform: scale(1.02);
+}
+.category-image {
+    width: 100%;
+    height: 100%;
+}
+.category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+    transition: filter 0.3s;
+}
+.category-card:hover .category-image img {
+    filter: brightness(0.5);
+}
+.category-card h3 {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 1.5rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+.category-header {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/category-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+.category-header h2 {
+    font-size: 2.5rem;
+}
+.product-detail {
+    padding: 60px 5%;
+}
+.product-detail-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+.product-detail-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.product-detail-info h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.quantity-control label {
+    margin-right: 10px;
+}
+.quantity-control input {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    text-align: center;
+}
+.cart-section {
+    padding: 60px 5%;
+}
+.cart-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+.cart-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+.cart-items {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+}
+.cart-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto auto auto;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding: 20px 0;
+}
+.cart-item:last-child {
+    border-bottom: none;
+}
+.cart-item-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+.cart-item-details h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+.cart-item-price {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+}
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--border-color);
+    background-color: var(--light-bg);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cart-item-quantity input {
+    width: 40px;
+    height: 30px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    margin: 0 5px;
+}
+.cart-item-total {
+    font-weight: 600;
+}
+.remove-item {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #dc3545;
+    font-size: 1.1rem;
+}
+.cart-summary {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    align-self: start;
+}
+.cart-summary h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.summary-item.total {
+    font-weight: 600;
+    font-size: 1.2rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+.checkout-btn {
+    width: 100%;
+    padding: 12px 0;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+.checkout-btn:hover {
+    background-color: var(--secondary-color);
+}
+.empty-cart,
+.empty-wishlist {
+    text-align: center;
+    padding: 40px 0;
+}
+.empty-cart i,
+.empty-wishlist i {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+.empty-cart p,
+.empty-wishlist p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #666;
+}
+.continue-shopping {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.continue-shopping:hover {
+    background-color: var(--secondary-color);
+}
+.wishlist-section {
+    padding: 60px 5%;
+}
+.wishlist-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+}
+.remove-wishlist-button {
+    background-color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--primary-color);
+}
+.remove-wishlist-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+footer {
+    background-color: #333;
+    color: white;
+    padding: 50px 5% 20px;
+}
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+.footer-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+.social-icons a {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+.social-icons a:hover {
+    background-color: var(--primary-color);
+}
+.copyright {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+@media (max-width: 992px) {
+    .product-detail-container {
+        grid-template-columns: 1fr;
+    }
+    .cart-container {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+    .logo {
+        margin-bottom: 15px;
+    }
+    .user-actions {
+        margin-top: 15px;
+    }
+    .cart-item {
+        grid-template-columns: 80px 1fr;
+        gap: 15px;
+    }
+    .cart-item-quantity,
+    .cart-item-total,
+    .remove-item {
+        grid-column: 2;
+    }
+}
+@media (max-width: 576px) {
+    .main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .main-nav li {
+        margin: 5px 10px;
+    }
+    .hero h2 {
+        font-size: 2rem;
+    }
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Blooming Market</h1>
+        </div>
+        <nav>
+            <ul class="main-nav">
+                <li class="{% if active_page == 'home' %}active{% endif %}"><a href="index.html">Home</a></li>
+                <li class="{% if active_page == 'wedding' %}active{% endif %}"><a href="about.html">About</a></li>
+                <li class="{% if active_page == 'birthday' %}active{% endif %}"><a href="contact.html">Contact</a></li>
+                <li class="{% if active_page == 'roses' %}active{% endif %}"><a href="product_detail.html">Shop</a></li>
+            </ul>
+        </nav>
+        <div class="user-actions">
+            <a href="{{ url_for('view_wishlist') }}" class="wishlist-icon"><i class="fas fa-heart"></i>
+                <span class="wishlist-count">{{ session.get('wishlist', [])|length }}</span>
+            </a>
+            <a href="{{ url_for('view_cart') }}" class="cart-icon"><i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">{{ session.get('cart', [])|sum(attribute='quantity') }}</span>
+            </a>
+        </div>
+    </header>
+
+<section class="categories">
+    <h2>Shop By Category</h2>
+    <div class="category-grid">
+        <a href="{{ url_for('category', category='wedding') }}" class="category-card">
+            <div class="category-image">
+                <img src="/static/images/img11.jpg" alt="Wedding Flowers">
+            </div>
+            <h3>Wedding</h3>
+        </a>
+        <a href="{{ url_for('category', category='birthday') }}" class="category-card">
+            <div class="category-image">
+                <img src="/static/images/img4.jpg" alt="Birthday Flowers">
+            </div>
+            <h3>Birthday</h3>
+        </a>
+        <a href="{{ url_for('category', category='roses') }}" class="category-card">
+            <div class="category-image">
+                <img src="/static/images/img3.jpg " alt="Roses">
+            </div>
+            <h3>Everyday</h3>
+        </a>
+    </div>
+</section>
+<!-- templates/1cart.html -->
+<section class="cart-section">
+    <h2>Your Shopping Cart</h2>
+    {% if cart|length > 0 %}
+    <div class="cart-container">
+        <div class="cart-items">
+            {% for item in cart %}
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    <img src="{{ url_for('static', filename='images/' + item.image) }}" alt="{{ item.name }}">
+
+                </div>
+                <div class="cart-item-details">
+                    <h3>{{ item.name }}</h3>
+                    <p class="cart-item-price">{{ item.price }}</p>
+                </div>
+                <div class="cart-item-quantity">
+                    <button class="quantity-btn minus">-</button>
+                    <input type="number" value="{{ item.quantity }}" min="1" data-id="{{ item.id }}">
+                    <button class="quantity-btn plus">+</button>
+                </div>
+                <div class="cart-item-total">
+                    {{ (item.price * item.quantity)|round(2) }}
+                </div>
+                <button class="remove-item" data-id="{{ item.id }}">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+        <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-item">
+                <span>Subtotal</span>
+                <span>{{ total|round(2) }}</span>
+            </div>
+            <div class="summary-item">
+                <span>Shipping</span>
+                <span>5.99</span>
+            </div>
+            <div class="summary-item total">
+                <span>Total</span>
+                <span>{{ (total + 5.99)|round(2) }}</span>
+            </div>
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+    <div class="empty-cart">
+        <i class="fas fa-shopping-cart"></i>
+        <p>Your cart is empty</p>
+        <a href="{{ url_for('home') }}" class="continue-shopping">Continue Shopping</a>
+    </div>
+</section>
+<!-- templates/wishlist.html -->
+<section class="wishlist-section">
+    <h2>Your Wishlist</h2>
+    {% if wishlist_items|length > 0 %}
+    <div class="wishlist-grid">
+        {% for product in wishlist_items %}
+        <div class="product-card">
+            <div class="product-image">
+                <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
+                <div class="product-actions">
+                    <button class="remove-wishlist-button" data-id="{{ product.id }}">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
+                <div class="product-rating">
+                    {% for i in range(5) %}
+                        {% if i < product.rating|int %}
+                            <i class="fas fa-star"></i>
+                        {% elif (product.rating - i) >= 0.5 %}
+                            <i class="fas fa-star-half-alt"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% end for %}
+                    <span>{{ product.rating }}</span>
+                </div>
+                <p class="product-price">{{ product.price }}</p>
+                <form class="add-to-cart-form" data-product-id="{{ product.id }}">
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="empty-wishlist">
+        <i class="far fa-heart"></i>
+        <p>Your wishlist is empty</p>
+        <a href="{{ url_for('home') }}" class="continue-shopping">Continue Shopping</a>
+    </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+    addToCartForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const productId = this.getAttribute('data-product-id');
+            const formData = new FormData();
+            formData.append('product_id', productId);
+            const quantityInput = this.querySelector('input[name="quantity"]');
+            if (quantityInput) {
+                formData.append('quantity', quantityInput.value);
+            }
+            fetch('/add_to_cart', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    updateCartCount(data.cart_count);
+                    showNotification('Item added to cart successfully!', 'success');
+                } else {
+                    showNotification('Failed to add item to cart.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            });
+        });
+    });
+
+    // Wishlist Functionality
+    const wishlistButtons = document.querySelectorAll('.wishlist-button');
+    wishlistButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-id');
+            const formData = new FormData();
+            formData.append('product_id', productId);
+            fetch('/add_to_wishlist', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update wishlist icon
+                    this.classList.toggle('active');
+                    this.querySelector('i').classList.remove('far');
+                    this.querySelector('i').classList.add('fas');
+                    updateWishlistCount(data.wishlist_count);
+                    showNotification('Item added to wishlist!', 'success');
+                } else {
+                    showNotification('Failed to add item to wishlist.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            });
+        });
+    });
+    const removeWishlistButtons = document.querySelectorAll('.remove-wishlist-button');
+    removeWishlistButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-id');
+            const productCard = this.closest('.product-card');
+            const formData = new FormData();
+            formData.append('product_id', productId);
+            fetch('/add_to_wishlist', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Remove product card with animation
+                    productCard.style.opacity = '0';
+                    setTimeout(() => {
+                        productCard.remove();
+                        const wishlistGrid = document.querySelector('.wishlist-grid');
+                        if (wishlistGrid && wishlistGrid.children.length === 0) {
+                            location.reload(); // Reload to show empty wishlist message
+                        }
+                    }, 300);
+                    updateWishlistCount(data.wishlist_count);
+                    showNotification('Item removed from wishlist!', 'success');
+                } else {
+                    showNotification('Failed to remove item from wishlist.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            });
+        });
+    });
+    const quantityButtons = document.querySelectorAll('.quantity-btn');
+    quantityButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            let value = parseInt(input.value);
+
+            if (this.classList.contains('minus') && value > 1) {
+                value--;
+            } else if (this.classList.contains('plus')) {
+                value++;
+            }
+            input.value = value;
+            updateCartItemTotal(this);
+        });
+    });
+    const removeCartButtons = document.querySelectorAll('.remove-item');
+    removeCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const itemId = this.getAttribute('data-id');
+            const cartItem = this.closest('.cart-item');
+            cartItem.style.opacity = '0';
+            setTimeout(() => {
+                cartItem.remove();
+                const cartItems = document.querySelector('.cart-items');
+                if (cartItems && cartItems.children.length === 0) {
+                    location.reload();
+                } else {
+                    updateCartTotals();
+                }
+            }, 300);
+            showNotification('Item removed from cart!', 'success');
+        });
+    });
+    function updateCartCount(count) {
+        const cartCount = document.querySelector('.cart-count');
+        if (cartCount) {
+            cartCount.textContent = count;
+        }
+    }
+    function updateWishlistCount(count) {
+        const wishlistCount = document.querySelector('.wishlist-count');
+        if (wishlistCount) {
+            wishlistCount.textContent = count;
+        }
+    }
+    function updateCartItemTotal(element) {
+        const cartItem = element.closest('.cart-item');
+        const input = cartItem.querySelector('input');
+        const priceElement = cartItem.querySelector('.cart-item-price');
+        const totalElement = cartItem.querySelector('.cart-item-total');
+        if (priceElement && totalElement && input) {
+            const price = parseFloat(priceElement.textContent.replace('$', ''));
+            const quantity = parseInt(input.value);
+            const total = price * quantity;
+            totalElement.textContent = '$' + total.toFixed(2);
+            updateCartTotals();
+        }
+    }
+    function updateCartTotals() {
+        const cartItems = document.querySelectorAll('.cart-item');
+        let subtotal = 0;
+
+        cartItems.forEach(item => {
+            const totalText = item.querySelector('.cart-item-total').textContent;
+            subtotal += parseFloat(totalText.replace('$', ''));
+        });
+        const shipping = 5.99;
+        const total = subtotal + shipping;
+        const subtotalElement = document.querySelector('.summary-item:first-child span:last-child');
+        const totalElement = document.querySelector('.summary-item.total span:last-child');
+        if (subtotalElement && totalElement) {
+            subtotalElement.textContent = '$' + subtotal.toFixed(2);
+            totalElement.textContent = '$' + total.toFixed(2);
+        }
+    }
+    function showNotification(message, type) {
+        let notificationContainer = document.getElementById('notification-container');
+        if (!notificationContainer) {
+            notificationContainer = document.createElement('div');
+            notificationContainer.id = 'notification-container';
+            notificationContainer.style.position = 'fixed';
+            notificationContainer.style.top = '20px';
+            notificationContainer.style.right = '20px';
+            notificationContainer.style.zIndex = '1000';
+            document.body.appendChild(notificationContainer);
+        }
+        const notification = document.createElement('div');
+        notification.className = 'notification ' + type;
+        notification.innerHTML = message + '<span class="close-notification">&times;</span>';
+        notification.style.backgroundColor = type === 'success' ? '#5cb85c' : '#d9534f';
+        notification.style.color = 'white';
+        notification.style.padding = '15px';
+        notification.style.marginBottom = '10px';
+        notification.style.borderRadius = '5px';
+        notification.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+        notification.style.display = 'flex';
+        notification.style.justifyContent = 'space-between';
+        notification.style.opacity = '0';
+        notification.style.transition = 'opacity 0.3s';
+
+        const closeButton = notification.querySelector('.close-notification');
+        closeButton.style.cursor = 'pointer';
+        closeButton.style.marginLeft = '10px';
+        notificationContainer.appendChild(notification);
+        setTimeout(() => {
+            notification.style.opacity = '1';
+        }, 10);
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 3000);
+        closeButton.addEventListener('click', function() {
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        });
+    }
+    const checkoutBtn = document.querySelector('.checkout-btn');
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', function() {
+            showNotification('Checkout functionality would be implemented here!', 'success');
+        });
+    }
+});
+</script>
+
+
+
+
+<div class="container my-5">
+    <div class="row">
+        {% if cart %}
+
+        <h1 class="text-center mb-5" style="color: white;">Shopping Cart</h1>
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-body">
+
+                    {% for item in cart %}
+
+                    <div class="row">
+                        <div class="col-sm-3 text-center align-self-center">
+                            <img src="{{ item.product.product_picture }}" alt="" class="img-fluid img-thumbnail shadow-sm" height="150px" width="150px">
+                        </div>
+                        <div class="col-sm-9">
+                            <div>
+                                <h3>{{ item.product.product_name }}</h3>
+                                <div class="my-3">
+                                    <label for="quantity">Quantity</label>
+                                    <a class="minus-cart btn" pid="{{item.id}}"><i class="fas fa-minus-square fa-lg"></i></a>
+                                    <span id="quantity">{{ item.quantity }}</span>
+                                    <a class="plus-cart btn " pid="{{ item.id }}"><i class="fas fa-plus-square fa-lg"></i></a>
+
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <p class="mb-0"><span><strong>Ksh {{ item.product.current_price }}</strong></span></p>
+                                    <a href="" class="remove-cart btn btn-sm btn-secondary mr-3 " pid="{{item.id}}">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Cart Summary </h3>
+                    <hr color="black">
+                    <ul class="list-group">
+                        {% for item in cart %}
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0"><strong>{{item.product.product_name}}</strong><span id="amount">{{item.product.current_price}} X <span id="quantity{{item.id}}">{{ item.quantity}}</span></span></li>
+
+                        {% endfor %}
+
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">Amout <span>Ksh <span id="amount_tt">{{ amount }}</span></span></li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                            <div style="margin-top: 15px;">
+                                <strong>Total</strong><small>(Including Shipping)</small>
+                            </div>
+                            <span><strong>Ksh </strong><span id="totalamount"><strong>{{ total }}</strong></span></span>
+
+                        </li>
+
+                    </ul>
+
+                    <div class="d-grid"><a href="/place-order" class="btn btn-primary">Place Order</a></div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <h1 class="text-center mb-5" style="color: white;">Your Cart is Empty</h1>
+
+    </div>
+</div>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Shopping Cart</h1>
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>
+                            <figure class="image is-48x48">
+                                <img src="{{ url_for('static', filename='images/' + item[3]) }}">
+                            </figure>
+                            {{ item[1] }}
+                        </td>
+                        <td>${{ item[2] }}</td>
+                        <td>{{ item[4] }}</td>
+                        <td>${{ item[5] }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4">Your cart is empty</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ url_for('home') }}" class="button">Continue Shopping</a>
+        </div>
+    </section>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Products</h1>
+            <div class="columns is-multiline">
+                {% for product in products %}
+                <div class="column is-4">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="{{ url_for('static', filename='images/' + product[4]) }}"
+                                     alt="{{ product[1] }}"
+                                     onclick="addToCart({{ product[0] }})"
+                                     style="cursor: pointer;">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <p class="title is-4">{{ product[1] }}</p>
+                            <p class="subtitle is-6">${{ product[3] }}</p>
+                            <div class="content">{{ product[2] }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <a href="{{ url_for('cart') }}" class="button is-primary">View Cart</a>
+        </div>
+    </section>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

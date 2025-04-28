@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    <title>Your Cart</title>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for msg in messages %}
+                <li>{{ msg }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <ul>
+        {% for item in cart %}
+            <li>{{ item.name }} - ${{ item.price }}
+                <a href="{{ url_for('remove_from_cart', index=loop.index0) }}">Remove</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if cart %}
+    <form method="POST" action="{{ url_for('checkout') }}">
+        <button type="submit">Checkout</button>
+    </form>
+    {% endif %}
+    <a href="/index">Continue Shopping</a>
+</body>
+</html>

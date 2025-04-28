@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flower Market</title>
+</head>
+<body>
+    <h1>Flower Gallery</h1>
+    {% for flower in flowers %}
+        <div>
+            <a href="{{ url_for('flower_detail', flower_id=flower.id) }}">
+                <img src="{{ url_for('static', filename='images/' + flower.image) }}" width="200px">
+            </a>
+            <p>{{ flower.name }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>
